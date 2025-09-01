@@ -118,7 +118,7 @@ const Projects: React.FC = () => {
           }`}
         >
           <a
-            href="https://github.com/mubashirmallik"
+            href="https://github.com/sarmadcodes"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
