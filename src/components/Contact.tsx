@@ -1,9 +1,33 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Github, Linkedin, Instagram, Send, MessageCircle } from 'lucide-react';
-import { portfolioData } from '../data/portfolio';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
-const Contact: React.FC = () => {
+// Mock portfolio data - replace with your actual data
+const portfolioData = {
+  personal: {
+    email: 'Sarmadabbasi@gmail.com',
+    phone: '+92 370 2114505',
+    location: 'Karachi, Pakistan',
+    socialLinks: {
+      github: 'https://github.com/yourusername',
+      linkedin: 'https://linkedin.com/in/yourusername',
+      instagram: 'https://instagram.com/yourusername'
+    }
+  }
+};
+
+// Mock scroll animation hook
+const useScrollAnimation = () => {
+  const [isVisible, setIsVisible] = useState(true);
+  const ref = React.useRef(null);
+  
+  React.useEffect(() => {
+    setIsVisible(true);
+  }, []);
+  
+  return { ref, isVisible };
+};
+
+const Contact = () => {
   const { ref, isVisible } = useScrollAnimation();
   const { personal } = portfolioData;
   const [formData, setFormData] = useState({
@@ -12,8 +36,9 @@ const Contact: React.FC = () => {
     subject: '',
     message: ''
   });
+  const [, setResult] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     
     // Basic validation
@@ -29,17 +54,40 @@ const Contact: React.FC = () => {
       return;
     }
 
-    // Send email using mailto
-    const subject = encodeURIComponent(formData.subject);
-    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
-    window.open(`mailto:mubashirmallick016@gmail.com?subject=${subject}&body=${body}`, '_blank');
-    
-    // Reset form
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    alert('Thank you for your message! Your email client should open with the message ready to send.');
+    // Prepare form data for Web3Forms
+    const web3FormData = new FormData();
+    web3FormData.append("access_key", "696e8720-284e-45e3-900f-f1512b20c057");
+    web3FormData.append("name", formData.name);
+    web3FormData.append("email", formData.email);
+    web3FormData.append("subject", formData.subject);
+    web3FormData.append("message", formData.message);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: web3FormData
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setResult("Message sent successfully!");
+        // Reset form
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        alert('Thank you for your message! I will get back to you soon.');
+      } else {
+        setResult("Error sending message. Please try again.");
+        alert('There was an error sending your message. Please try again or use the WhatsApp button.');
+      }
+    } catch (error) {
+      setResult("Error sending message. Please try again.");
+      alert('There was an error sending your message. Please try again or use the WhatsApp button.');
+    }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -47,12 +95,12 @@ const Contact: React.FC = () => {
   };
 
   const handleWhatsAppClick = () => {
-    const message = encodeURIComponent("Hi Mubashir! I'd like to discuss a project with you. Let's connect!");
-    window.open(`https://wa.me/03701145050?text=${message}`, '_blank');
+    const message = encodeURIComponent("Hi Sarmad! I'd like to discuss a project with you. Let's connect!");
+    window.open(`https://wa.me/923702114505?text=${message}`, '_blank');
   };
 
   return (
-    <section id="contact" ref={ref} className="py-20">
+    <section id="contact" ref={ref} className="py-20 bg-gray-50">
       <div className="container mx-auto px-6">
         <div
           className={`text-center mb-16 transition-all duration-1000 ${
@@ -74,7 +122,7 @@ const Contact: React.FC = () => {
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
             }`}
           >
-            <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-lg shadow-md">
               <div className="mb-6">
                 <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
                   Your Name
@@ -86,7 +134,6 @@ const Contact: React.FC = () => {
                   value={formData.name}
                   onChange={handleChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300"
-                  required
                 />
               </div>
 
@@ -101,7 +148,6 @@ const Contact: React.FC = () => {
                   value={formData.email}
                   onChange={handleChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300"
-                  required
                 />
               </div>
 
@@ -116,7 +162,6 @@ const Contact: React.FC = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300"
-                  required
                 />
               </div>
 
@@ -131,20 +176,18 @@ const Contact: React.FC = () => {
                   value={formData.message}
                   onChange={handleChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-300 resize-none"
-                  required
                 />
               </div>
 
               <div className="flex space-x-4">
                 <button
-                  type="submit"
+                  onClick={handleSubmit}
                   className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
                 >
                   <Send className="w-5 h-5 mr-2" />
                   Send Email
                 </button>
                 <button
-                  type="button"
                   onClick={handleWhatsAppClick}
                   className="flex-1 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
                 >
@@ -152,7 +195,7 @@ const Contact: React.FC = () => {
                   WhatsApp
                 </button>
               </div>
-            </form>
+            </div>
           </div>
 
           {/* Contact Information */}
@@ -223,7 +266,7 @@ const Contact: React.FC = () => {
                       <Instagram size={20} />
                     </a>
                     <a
-                      href={`https://wa.me/923702114505?text=${encodeURIComponent("Hi Mubashir! I'd like to connect with you.")}`}
+                      href={`https://wa.me/923702114505?text=${encodeURIComponent("Hi Sarmad! I'd like to connect with you.")}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-10 h-10 flex items-center justify-center bg-gray-100 text-gray-700 rounded-full hover:bg-green-500 hover:text-white transition-all duration-300 transform hover:scale-110"
