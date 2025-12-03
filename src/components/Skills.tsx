@@ -50,7 +50,7 @@ const Skills: React.FC = () => {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">My Skills</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">My Expertise</h2>
           <div className="w-20 h-1 bg-blue-600 mx-auto"></div>
           <p className="text-gray-700 mt-4 max-w-2xl mx-auto">
             I've worked with a variety of technologies and tools in web development. 
