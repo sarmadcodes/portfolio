@@ -27,7 +27,7 @@ const Projects: React.FC = () => {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">My Projects</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">My Work</h2>
           <div className="w-20 h-1 bg-blue-600 mx-auto"></div>
           <p className="text-gray-700 mt-4 max-w-2xl mx-auto">
             Here are some of my recent projects. Each one was built with attention to detail 
@@ -45,7 +45,7 @@ const Projects: React.FC = () => {
             <button
               key={category.id}
               onClick={() => setActiveFilter(category.id)}
-              className={`px-6 py-2 rounded-lg font-medium transition-all duration-300 ${
+              className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
                 activeFilter === category.id
                   ? 'bg-blue-600 text-white shadow-lg'
                   : 'bg-white text-gray-700 hover:bg-gray-100'
@@ -121,7 +121,7 @@ const Projects: React.FC = () => {
             href="https://github.com/sarmadcodes"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
+            className="inline-flex items-center bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
           >
             <Github className="w-5 h-5 mr-2" />
             View More on GitHub
