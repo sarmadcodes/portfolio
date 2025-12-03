@@ -7,9 +7,9 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   const navLinks = [
-    { href: '#home', label: 'Home' },
+    { href: '#home', label: 'Me' },
     { href: '#about', label: 'About' },
-    { href: '#skills', label: 'Skills' },
+    { href: '#skills', label: 'Expertise' },
     { href: '#projects', label: 'Projects' },
     { href: '#contact', label: 'Contact' }
   ];
