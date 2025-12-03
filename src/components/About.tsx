@@ -10,7 +10,7 @@ const About: React.FC = () => {
   const handleDownloadCV = () => {
     const link = document.createElement('a');
     link.href = personal.cvUrl;
-    link.download = 'MUBASHIR MALLIK (1).pdf';
+    link.download = '';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -37,7 +37,7 @@ const About: React.FC = () => {
             <div className="relative max-w-sm mx-auto lg:mx-0">
               <div className="absolute inset-0 bg-blue-600 rounded-lg transform translate-x-4 translate-y-4"></div>
               <img
-                src="\pic1.jpg"
+                src="https://t4.ftcdn.net/jpg/05/46/01/69/360_F_546016914_qE7KlgNMJCzFSueLhBZ1Qo7NbmIVfu9e.jpg"
                 alt={personal.name}
                 className="relative z-10 rounded-lg shadow-lg w-full h-auto"
               />
@@ -72,7 +72,7 @@ const About: React.FC = () => {
 
             <button 
               onClick={handleDownloadCV}
-              className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
+              className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
             >
               <Download className="w-5 h-5 mr-2" />
               Download CV
